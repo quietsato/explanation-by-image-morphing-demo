@@ -1,55 +1,38 @@
 .ControllerButtons__Button {
-    font-size: 1em;
-    padding: 16px 24px;
-    border-radius: 8px;
-    border: none;
     background-color: transparent;
     user-select: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 16px;
+    background: #e0e0e0;
+    box-shadow:  7px 7px 14px #b3b3b3,
+                 -7px -7px 14px #ffffff;
 }
 
 .ControllerButtons__PredictButton {
-    font-weight: bold;
-    border: 1px solid #6ec6ff;
-    color:  #6ec6ff;
+    color:  #0069c0;
 }
 
 .ControllerButtons__ClearButton {
-    border: 1px solid #ff7961;
-    color: #ff7961;
+    color: #ba000d;
 }
 
 @media (hover: hover) {
-    .ControllerButtons__Button {
-        transition: background-color .2s, color .2s;
-    }
-
-    .ControllerButtons__PredictButton:hover {
-        background-color: #0069c0;
-        border: 1px solid #0069c0;
-        color: #ffffffdd;
-    }
-
-    .ControllerButtons__ClearButton:hover {
-        background-color: #ba000d;
-        border: 1px solid #ba000d;
-        color: #ffffffee;
+    .ControllerButtons__Button:hover {
+        border-radius: 16px;
+        background: #e0e0e0;
+        box-shadow:  inset 7px 7px 14px #b3b3b3,
+                     inset -7px -7px 14px #ffffff;
     }
 }
 
 @media (hover: none) {
-    .ControllerButtons__Button {
-        transition: background-color .3s, color .3s;
-    }
-
-    .ControllerButtons__PredictButton:active {
-        background-color: #0069c0;
-        border: 1px solid #0069c0;
-        color: #ffffffdd;
-    }
-    
-    .ControllerButtons__ClearButton:active {
-        background-color: #ba000d;
-        border: 1px solid #ba000d;
-        color: #ffffffee;
+    .ControllerButtons__Button:active {
+        border-radius: 16px;
+        background: #e0e0e0;
+        box-shadow:  inset 7px 7px 14px #b3b3b3,
+                     inset -7px -7px 14px #ffffff;
     }
 }
