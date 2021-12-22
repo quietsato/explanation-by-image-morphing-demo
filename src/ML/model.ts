@@ -201,5 +201,5 @@ function reconstructionLoss(xs: tf.Tensor4D, xs_rec: tf.Tensor4D): tf.Tensor1D {
         undefined,
         undefined,
         tf.Reduction.NONE
-    ).sum([1, 2, 3]) as tf.Tensor1D;
+    ).mean([1, 2, 3]) as tf.Tensor1D;
 }
