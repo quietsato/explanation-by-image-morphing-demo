@@ -7,6 +7,7 @@ export default class IDCVAE {
     private decoder: tf.LayersModel | null = null;
 
     public random: boolean = false;
+    private representative: tf.Tensor2D | null = null;
 
     async encode(images: Image[]): Promise<[Feature[], Feature[], Feature[]]> {
         let xs = tf.tensor(images).reshape([-1, 28, 28, 1]) as tf.Tensor4D;
@@ -42,6 +43,89 @@ export default class IDCVAE {
 
         const [xs] = this.decoder.call([d_in], {}) as tf.Tensor4D[];
         return xs;
+    }
+
+    async classify(images: Image[]): Promise<Label[]> {
+        const xs = tf.tensor(images).reshape([-1, 28, 28, 1]) as tf.Tensor4D;
+
+        let zs = this.encodeWithTensor(xs)[(this.random ? 0 : 1)] as tf.Tensor2D;
+
+        const promises = [...Array(10)].map((_, l) =>
+            new Promise<tf.Tensor1D>((resolve, _) => {
+                const ys = tf.tensor1d([l], "int32").tile([xs.shape[0]]) as tf.Tensor1D;
+                const xs_rec = this.decodeWithTensor(zs, ys);
+                const loss = reconstructionLoss(xs, xs_rec);
+                resolve(loss);
+            })
+        );
+        const loss_each_label = await Promise.all(promises);
+
+        const ys = tf.stack(loss_each_label).argMin(0) as tf.Tensor1D;
+        return ys.array();
+    }
+
+    async classifyWithExplanation(images: Image[], n: number): Promise<[Label[], Image[][]]> {
+        const ys = await this.classify(images);
+        const expl = await this.generateMorphingImages(images, ys, n);
+        return [ys, expl];
+    }
+
+    async generateMorphingImages(images: Image[], labels: Label[], n: number): Promise<Image[][]> {
+        if (!this.representative) {
+            throw new Error("Representative points is not supplied.");
+        }
+
+        const xs = tf.tensor(images).reshape([-1, 28, 28, 1]) as tf.Tensor4D;
+        const ys = tf.tensor1d(labels, "int32");
+
+        const encoded = this.encodeWithTensor(xs);
+        const zs = this.random ? encoded[0] : encoded[1];
+
+        let zs_l = tf.gather(zs, ys);
+        const repr_l = tf.gather(this.representative, ys);
+        const diff = repr_l.sub(zs_l).div(n);
+
+        let morphing_images: tf.Tensor4D[] = [];
+        for (let i = 0; i <= n; i++) {
+            zs_l = zs_l.add(diff);
+            const decoded = this.decodeWithTensor(zs_l, ys);
+            morphing_images.push(decoded);
+        }
+
+        return tf.concat4d(morphing_images, 0)
+            .reshape([-1, n + 1, 28, 28]).array() as Promise<Image[][]>;
+    }
+
+    getRepresentative(): Feature[] | null {
+        return this.representative?.arraySync() || null;
+    }
+
+    setRepresentative(value: Feature[]) {
+        this.representative = tf.tensor2d(value);
+    }
+
+    async updateRepresentative(imgs: Image[], labels: Label[]) {
+        const xs = tf.tensor(imgs).reshape([-1, 28, 28, 1]) as tf.Tensor4D;
+        const ys = tf.tensor1d(labels);
+        const [zs, zs_mean, _zs_log_var] = this.encodeWithTensor(xs);
+
+        this.representative = this.random ?
+            await this.calculateRepresentative(zs, ys) :
+            await this.calculateRepresentative(zs_mean, ys);
+    }
+
+    private async calculateRepresentative(zs: tf.Tensor2D, ys: tf.Tensor1D): Promise<tf.Tensor2D> {
+        let promises = [...Array(10)].map((_, l) =>
+            new Promise<tf.Tensor2D>(async (resolve, _) => {
+                const mask = tf.equal(ys, l);
+                const zs_l = await tf.booleanMaskAsync(zs, mask);
+                const repr_l = tf.mean(zs_l, 0, true);
+                resolve(repr_l as tf.Tensor2D);
+            })
+        );
+
+        const representative: tf.Tensor2D[] = await Promise.all(promises);
+        return tf.concat2d(representative, 0);
     }
 
     async load(): Promise<any> {
@@ -108,4 +192,14 @@ function buildDecoder(): tf.LayersModel {
     decoder.add(tf.layers.conv2dTranspose({ filters: 1, kernelSize: 4, strides: 1, padding: "same", activation: "sigmoid" }));
 
     return decoder;
+}
+
+function reconstructionLoss(xs: tf.Tensor4D, xs_rec: tf.Tensor4D): tf.Tensor1D {
+    return tf.losses.sigmoidCrossEntropy(
+        xs,
+        xs_rec,
+        undefined,
+        undefined,
+        tf.Reduction.NONE
+    ).sum([1, 2, 3]) as tf.Tensor1D;
 }
