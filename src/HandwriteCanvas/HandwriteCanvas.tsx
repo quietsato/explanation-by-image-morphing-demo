@@ -78,13 +78,13 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
     //
     function onMouseDown(e: React.MouseEvent) {
         e.preventDefault();
-        const [x, y] = getCurrentPointerPosition(e);
+        const [x, y] = getCurrentPointerPosition(e, canvasRef.current!!);
         startDrawing(x, y);
     }
 
     function onMouseUp(e: React.MouseEvent) {
         e.preventDefault()
-        const [x, y] = getCurrentPointerPosition(e);
+        const [x, y] = getCurrentPointerPosition(e, canvasRef.current!!);
         stopDrawing(x, y);
     }
 
@@ -93,12 +93,11 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
         if (!isDrawing) {
             return;
         }
-        const [x, y] = getCurrentPointerPosition(e);
+        const [x, y] = getCurrentPointerPosition(e, canvasRef.current!!);
         draw(x, y);
     }
 
     function onTouchStart(e: React.TouchEvent) {
-        e.preventDefault();
         const [x, y] = getCurrentTouchPosition(e, canvasRef.current!!);
         startDrawing(x, y);
     }
@@ -108,7 +107,6 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
         stopDrawing(x, y);
     }
     function onTouchMove(e: React.TouchEvent) {
-        e.preventDefault();
         if (!isDrawing) {
             return;
         }
@@ -161,13 +159,15 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
     );
 }
 
-function getCurrentPointerPosition(e: React.MouseEvent): [number, number] {
-    return [e.nativeEvent.offsetX, e.nativeEvent.offsetY];
+function getCurrentPointerPosition(e: React.MouseEvent, canvasRef: HTMLCanvasElement): [number, number] {
+    const x = e.clientX - canvasRef.getBoundingClientRect().left;
+    const y = e.clientY - canvasRef.getBoundingClientRect().top;
+    return [x, y];
 }
 
 function getCurrentTouchPosition(e: React.TouchEvent, canvasRef: HTMLCanvasElement): [number, number] {
-    const x = e.targetTouches[0].clientX - canvasRef.getBoundingClientRect().left;
-    const y = e.targetTouches[0].clientY - canvasRef.getBoundingClientRect().top;
+    const x = e.changedTouches[0].clientX - canvasRef.getBoundingClientRect().left;
+    const y = e.changedTouches[0].clientY - canvasRef.getBoundingClientRect().top;
     return [x, y];
 }
 
