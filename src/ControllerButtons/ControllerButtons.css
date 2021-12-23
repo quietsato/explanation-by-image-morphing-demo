@@ -4,7 +4,7 @@
     border-radius: 8px;
     border: none;
     background-color: transparent;
-    transition: background-color .2s, color .1s;
+    user-select: none;
 }
 
 .ControllerButtons__PredictButton {
@@ -13,19 +13,43 @@
     color:  #6ec6ff;
 }
 
-.ControllerButtons__PredictButton:hover {
-    background-color: #0069c0;
-    border: 1px solid #0069c0;
-    color: #ffffffdd;
-}
-
 .ControllerButtons__ClearButton {
     border: 1px solid #ff7961;
     color: #ff7961;
 }
 
-.ControllerButtons__ClearButton:hover {
-    background-color: #ba000d;
-    border: 1px solid #ba000d;
-    color: #ffffffee;
+@media (hover: hover) {
+    .ControllerButtons__Button {
+        transition: background-color .2s, color .2s;
+    }
+
+    .ControllerButtons__PredictButton:hover {
+        background-color: #0069c0;
+        border: 1px solid #0069c0;
+        color: #ffffffdd;
+    }
+
+    .ControllerButtons__ClearButton:hover {
+        background-color: #ba000d;
+        border: 1px solid #ba000d;
+        color: #ffffffee;
+    }
+}
+
+@media (hover: none) {
+    .ControllerButtons__Button {
+        transition: background-color .3s, color .3s;
+    }
+
+    .ControllerButtons__PredictButton:active {
+        background-color: #0069c0;
+        border: 1px solid #0069c0;
+        color: #ffffffdd;
+    }
+    
+    .ControllerButtons__ClearButton:active {
+        background-color: #ba000d;
+        border: 1px solid #ba000d;
+        color: #ffffffee;
+    }
 }
