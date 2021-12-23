@@ -51,12 +51,12 @@ export default class IDCVAE {
         let zs = this.encodeWithTensor(xs)[(this.random ? 0 : 1)] as tf.Tensor2D;
 
         const promises = [...Array(10)].map((_, l) =>
-            new Promise<tf.Tensor1D>((resolve, _) => {
+            (async () => {
                 const ys = tf.tensor1d([l], "int32").tile([xs.shape[0]]) as tf.Tensor1D;
                 const xs_rec = this.decodeWithTensor(zs, ys);
                 const loss = reconstructionLoss(xs, xs_rec);
-                resolve(loss);
-            })
+                return loss;
+            })()
         );
         const loss_each_label = await Promise.all(promises);
 
@@ -115,12 +115,12 @@ export default class IDCVAE {
 
     private async calculateRepresentative(zs: tf.Tensor2D, ys: tf.Tensor1D): Promise<tf.Tensor2D> {
         let promises = [...Array(10)].map((_, l) =>
-            new Promise<tf.Tensor2D>(async (resolve, _) => {
+            (async () => {
                 const mask = tf.equal(ys, l);
                 const zs_l = await tf.booleanMaskAsync(zs, mask);
                 const repr_l = tf.mean(zs_l, 0, true);
-                resolve(repr_l as tf.Tensor2D);
-            })
+                return repr_l as tf.Tensor2D;
+            })()
         );
 
         const representative: tf.Tensor2D[] = await Promise.all(promises);
