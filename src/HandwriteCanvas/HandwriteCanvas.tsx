@@ -59,7 +59,7 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
     function draw(x: number, y: number) {
         const canvasContext = initCanvasContext();
         canvasContext.lineTo(x, y);
-        canvasContext.lineWidth = 10;
+        canvasContext.lineWidth = 20;
         canvasContext.lineCap = "round";
         canvasContext.lineJoin = "round";
         canvasContext.strokeStyle = "#ff0000";
