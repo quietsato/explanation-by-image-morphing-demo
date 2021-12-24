@@ -1,0 +1,33 @@
+.MorphingView {
+    display: flex;
+    overflow-x: scroll;
+    flex-direction: row;
+    max-width: 100%;
+    padding: 24px;
+    border-radius: 16px;
+    background: #e0e0e0;
+    box-shadow:  inset 7px 7px 14px #b3b3b3,
+                 inset -7px -7px 14px #ffffff;
+}
+
+.MorphingView__Item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.MorphingView__Item::after {
+    content: "→";
+    font-size: 24px;
+    width: 32px;
+    user-select: none;
+}
+
+.MorphingView__Item:last-child::after {
+    display: none;
+}
+
+.MorphingView__Item__Image {
+    width: 64px;
+    height: 64px;
+}
