@@ -87,3 +87,12 @@ export function array2DToGrayscaleImageData(
         Uint8ClampedArray.from(dataArray), targetWidth, targetHeight
     );
 }
+
+export function imageDataToDataUrl(imageData: ImageData): string {
+    const tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = imageData.width;
+    tmpCanvas.height = imageData.height;
+    const tmpCanvasContext = tmpCanvas.getContext("2d")!!;
+    tmpCanvasContext.putImageData(imageData, 0, 0);
+    return tmpCanvas.toDataURL("image/png", 1);
+}
