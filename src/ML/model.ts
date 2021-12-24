@@ -79,17 +79,16 @@ export default class IDCVAE {
         const ys = tf.tensor1d(labels, "int32");
 
         const encoded = this.encodeWithTensor(xs);
-        const zs = this.random ? encoded[0] : encoded[1];
+        let zs = this.random ? encoded[0] : encoded[1];
 
-        let zs_l = tf.gather(zs, ys);
         const repr_l = tf.gather(this.representative, ys);
-        const diff = repr_l.sub(zs_l).div(n);
+        const diff = repr_l.sub(zs).div(n);
 
         let morphing_images: tf.Tensor4D[] = [];
         for (let i = 0; i <= n; i++) {
-            zs_l = zs_l.add(diff);
-            const decoded = this.decodeWithTensor(zs_l, ys);
+            const decoded = this.decodeWithTensor(zs, ys);
             morphing_images.push(decoded);
+            zs = zs.add(diff);
         }
 
         return tf.concat4d(morphing_images, 0)
