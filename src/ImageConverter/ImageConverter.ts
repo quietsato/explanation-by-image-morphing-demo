@@ -52,7 +52,7 @@ export function array2DToGrayscaleImageData(
     targetHeight: number
 ): ImageData {
     // Check if the array is empty
-    if (image.length == 0 || image[0].length == 0)
+    if (image.length === 0 || image[0].length === 0)
         throw new Error("Empty array is not supported");
 
     const [imageWidth, imageHeight] = [image[0].length, image.length];
