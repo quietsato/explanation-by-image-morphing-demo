@@ -135,6 +135,11 @@ export default class IDCVAE {
         this.decoder = await tf.loadLayersModel(
             `${modelBasePath}/assets/model_decoder/model.json`
         );
+        this.setRepresentative(
+            await (
+                await fetch(`${modelBasePath}/assets/representatives.json`)
+            ).json() as Feature[]
+        );
     }
 
     buildDefaultModel() {
