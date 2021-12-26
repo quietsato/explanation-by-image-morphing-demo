@@ -16,20 +16,23 @@ const ControllerButtons: React.FC<Props> = (props) => {
             <button
                 className={[
                     "ControllerButtons__Button",
-                    "ControllerButtons__PredictButton"
+                    "ControllerButtons__ClearButton"
                 ].join(" ")}
-                onClick={onImageDataRequested}
+                onClick={onClearCanvas}
+                type="button"
             >
-                Predict
+                Clear Canvas
             </button>
             <button
                 className={[
                     "ControllerButtons__Button",
-                    "ControllerButtons__ClearButton"
+                    "ControllerButtons__PredictButton"
                 ].join(" ")}
-                onClick={onClearCanvas}
+                onClick={onImageDataRequested}
+                type="submit"
+                autoFocus={true}
             >
-                Clear Canvas
+                Predict
             </button>
         </div>
     )
