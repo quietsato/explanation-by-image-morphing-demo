@@ -11,6 +11,7 @@
     "@types/node": "^16.11.14",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "gif.js": "0.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -18,8 +19,8 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "ncp ./node_modules/gif.js/dist/gif.worker.js ./public/gif.worker.js && react-scripts start",
+    "build": "ncp ./node_modules/gif.js/dist/gif.worker.js ./public/gif.worker.js && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -42,6 +43,8 @@
     ]
   },
   "devDependencies": {
-    "jest-canvas-mock": "^2.3.1"
+    "@types/gif.js": "^0.2.2",
+    "jest-canvas-mock": "^2.3.1",
+    "ncp": "^2.0.0"
   }
 }
