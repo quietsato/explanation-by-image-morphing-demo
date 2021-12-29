@@ -1,3 +1,5 @@
+import GIF from "gif.js";
+
 import { Image } from "../types";
 
 export function grayscaleImageDataTo2DArray(
@@ -86,4 +88,31 @@ export function array2DToGrayscaleImageData(
     return new ImageData(
         Uint8ClampedArray.from(dataArray), targetWidth, targetHeight
     );
+}
+
+export function imageDataToDataUrl(imageData: ImageData): string {
+    const tmpCanvas = document.createElement("canvas");
+    tmpCanvas.width = imageData.width;
+    tmpCanvas.height = imageData.height;
+    const tmpCanvasContext = tmpCanvas.getContext("2d")!!;
+    tmpCanvasContext.putImageData(imageData, 0, 0);
+    return tmpCanvas.toDataURL("image/png", 1);
+}
+
+export function createGifFromDataUrlList(images: ImageData[]): Promise<string> {
+    return new Promise<string>((resolve) => {
+        const gif = new GIF({
+            workerScript: `${process.env.PUBLIC_URL}/gif.worker.js`
+        });
+
+        images.forEach((img) => {
+            gif.addFrame(img);
+        });
+
+        gif.on("finished", (blob: Blob, _data: Uint8Array) => {
+            resolve(URL.createObjectURL(blob));
+        });
+
+        gif.render();
+    });
 }
