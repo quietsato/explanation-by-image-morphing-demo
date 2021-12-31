@@ -6,12 +6,11 @@ import { Label } from "../types";
 import "./PredictionView.css";
 
 type Props = {
-  inputImage: ImageData | null,
   predictedLabel: Label | null
 };
 
 const PredictionView: React.FC<Props> = (props) => {
-  if (props.inputImage === null || props.predictedLabel === null) {
+  if (props.predictedLabel == null) {
     return (<></>);
   }
 
