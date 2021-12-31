@@ -108,7 +108,7 @@ export default class IDCVAE {
     async updateRepresentative(imgs: Image[], labels: Label[]) {
         const xs = tf.tensor(imgs).reshape([-1, 28, 28, 1]) as tf.Tensor4D;
         const ys = tf.tensor1d(labels);
-        const [zs, zs_mean, _zs_log_var] = this.encodeWithTensor(xs);
+        const [zs, zs_mean] = this.encodeWithTensor(xs);
 
         this.representative = this.random ?
             await this.calculateRepresentative(zs, ys) :
