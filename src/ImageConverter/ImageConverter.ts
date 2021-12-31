@@ -48,6 +48,14 @@ export function grayscaleImageDataTo2DArray(
     return returnArray;
 }
 
+export function normalize2DArrayImage(image: Image) {
+    return image.map(row => row.map(pixel => pixel / 255.0));
+}
+
+export function amplify2DArrayImage(image: Image) {
+    return image.map(row => row.map(pixel => pixel * 255));
+}
+
 export function array2DToGrayscaleImageData(
     image: Image,
     targetWidth: number,
