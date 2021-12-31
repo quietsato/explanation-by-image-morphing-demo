@@ -6,7 +6,7 @@ render(<ControllerButtons />);
 
 test('renders 2 buttons', () => {
   const predictionButton = screen.getByText(/predict/i);
-  const clearCanvasButton = screen.getByText(/clear canvas/i);
+  const clearCanvasButton = screen.getByText(/clear/i);
 
   expect(predictionButton).toBeInTheDocument();
   expect(clearCanvasButton).toBeInTheDocument();
