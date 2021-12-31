@@ -31,8 +31,8 @@ export function grayscaleImageDataTo2DArray(
             Math.floor(origY / stepY)
         ];
 
-        // Use RED pixel value to convert.
-        const p = imageData.data[i];
+        // Use ALPHA channel value to convert.
+        const p = imageData.data[i + 3];
         returnArray[resultY][resultX] += p;
     }
 
