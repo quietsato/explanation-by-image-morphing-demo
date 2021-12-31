@@ -1,11 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 import HandwriteCanvas from './HandwriteCanvas/HandwriteCanvas';
 import ControllerButtons from './ControllerButtons/ControllerButtons';
+import PredictionView from './Result/PredictionView';
+import GifView from './Result/GifView';
+import MorphingView from './Result/MorphingView';
 
 function App() {
+  const [images, setImages] = React.useState<ImageData[] | null>(null);
+  const [label, setLabel] = React.useState<number | null>(null);
+
   return (
     <div className="App">
       <main className="App__Container">
@@ -15,6 +20,9 @@ function App() {
         <HandwriteCanvas className="App__Canvas">
           <ControllerButtons className='App__Button' />
         </HandwriteCanvas>
+        <PredictionView predictedLabel={label} />
+        <GifView morphingImages={images} />
+        <MorphingView morphingImages={images} />
       </main>
     </div>
   );
