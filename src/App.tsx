@@ -8,8 +8,8 @@ import GifView from './Result/GifView';
 import MorphingView from './Result/MorphingView';
 
 function App() {
-  const [images, setImages] = React.useState<ImageData[] | null>(null);
-  const [label, setLabel] = React.useState<number | null>(null);
+  const [images] = React.useState<ImageData[] | null>(null);
+  const [label] = React.useState<number | null>(null);
 
   return (
     <div className="App">
