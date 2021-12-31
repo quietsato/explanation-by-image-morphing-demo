@@ -15,15 +15,20 @@ import PredictionView from './Result/PredictionView';
 import GifView from './Result/GifView';
 import MorphingView from './Result/MorphingView';
 
+import { setBackend } from '@tensorflow/tfjs';
+import '@tensorflow/tfjs-backend-wasm';
+
 function App() {
   const [images, setImages] = React.useState<ImageData[] | null>(null);
   const [label, setLabel] = React.useState<number | null>(null);
   const [model, setModel] = React.useState<IDCVAE | null>(null);
 
   React.useEffect(() => {
+    setBackend('wasm').then(() => {
     const model = new IDCVAE();
-    model.load().then(() => {
-      setModel(model);
+      model.load().then(() => {
+        setModel(model);
+      });
     });
   }, []);
 

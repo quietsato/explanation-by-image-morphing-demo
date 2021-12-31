@@ -2,8 +2,6 @@ import * as tf from "@tensorflow/tfjs";
 
 import { Feature, Image, Label } from "../types";
 
-tf.setBackend("cpu");
-
 export default class IDCVAE {
     private encoder: tf.LayersModel | null = null;
     private decoder: tf.LayersModel | null = null;
