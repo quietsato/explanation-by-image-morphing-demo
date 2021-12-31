@@ -3,7 +3,8 @@
     overflow-x: scroll;
     flex-direction: row;
     max-width: 100%;
-    padding: 24px;
+    padding: 32px;
+    padding-right: 0;
     border-radius: 16px;
     background: #e0e0e0;
     box-shadow:  inset 7px 7px 14px #b3b3b3,
@@ -24,7 +25,7 @@
 }
 
 .MorphingView__Item:last-child::after {
-    display: none;
+    content: "";
 }
 
 .MorphingView__Item__Image {
