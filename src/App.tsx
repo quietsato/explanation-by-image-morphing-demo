@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import HandwriteCanvas from './HandwriteCanvas/HandwriteCanvas';
+import ControllerButtons from './ControllerButtons/ControllerButtons';
+import PredictionView from './Result/PredictionView';
+import GifView from './Result/GifView';
+import MorphingView from './Result/MorphingView';
+
 function App() {
+  const [images] = React.useState<ImageData[] | null>(null);
+  const [label] = React.useState<number | null>(null);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <main className="App__Container">
+        <h1>
+          Draw a digit on the following box
+        </h1>
+        <HandwriteCanvas className="App__Canvas">
+          <ControllerButtons className='App__Button' />
+        </HandwriteCanvas>
+        <PredictionView predictedLabel={label} />
+        <GifView morphingImages={images} />
+        <MorphingView morphingImages={images} />
+      </main>
     </div>
   );
 }

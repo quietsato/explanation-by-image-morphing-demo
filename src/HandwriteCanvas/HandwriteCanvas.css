@@ -1,0 +1,7 @@
+.HandwriteCanvas__Canvas {
+    touch-action: none;
+    border-radius: 16px;
+    background: #e0e0e0;
+    box-shadow:  inset 7px 7px 14px #b3b3b3,
+                 inset -7px -7px 14px #ffffff;
+}

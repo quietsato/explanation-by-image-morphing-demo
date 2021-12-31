@@ -1,5 +1,6 @@
 import React from "react";
 
+import "./HandwriteCanvas.css";
 
 export type Props = {
     onImageDataRequested?: (data: ImageData) => any,
@@ -140,6 +141,7 @@ const HandwriteCanvas: React.FC<Props> = (props) => {
         <>
             <div {...rootProps}>
                 <canvas
+                    className="HandwriteCanvas__Canvas"
                     ref={canvasRef}
                     width={280}
                     height={280}

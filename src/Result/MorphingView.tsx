@@ -19,7 +19,7 @@ const MorphingView: React.FC<Props> = (props) => {
           <img
             className="MorphingView__Item__Image"
             src={imageDataToDataUrl(image)}
-            alt={`Morphing Image (${i + 1} of ${props.morphingImages!!.length})`}
+            alt=""
           />
         </div>
       ))}

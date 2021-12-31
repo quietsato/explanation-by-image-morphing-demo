@@ -21,7 +21,7 @@ const ControllerButtons: React.FC<Props> = (props) => {
                 onClick={onClearCanvas}
                 type="button"
             >
-                Clear Canvas
+                Clear
             </button>
             <button
                 className={[
