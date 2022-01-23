@@ -2,6 +2,10 @@ import * as tf from "@tensorflow/tfjs";
 
 import { Feature, Image, Label } from "../types";
 
+export function registerCustomLayers() {
+    tf.serialization.registerClass(Sampling);
+}
+
 export default class IDCVAE {
     private encoder: tf.LayersModel | null = null;
     private decoder: tf.LayersModel | null = null;
@@ -161,7 +165,6 @@ class Sampling extends tf.layers.Layer {
 
     static get className() { return "Sampling"; }
 }
-tf.serialization.registerClass(Sampling);
 
 function buildEncoder(): tf.LayersModel {
     let input = tf.layers.input({ shape: [28, 28, 1] });

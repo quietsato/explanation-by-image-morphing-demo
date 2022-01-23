@@ -7,13 +7,13 @@ import {
   grayscaleImageDataTo2DArray,
   normalize2DArrayImage,
 } from "./ImageConverter/ImageConverter";
-import IDCVAE from "./ML/model";
+import IDCVAE, { registerCustomLayers } from "./ML/model";
 
-import HandwriteCanvas from './HandwriteCanvas/HandwriteCanvas';
-import ControllerButtons from './ControllerButtons/ControllerButtons';
-import PredictionView from './Result/PredictionView';
-import GifView from './Result/GifView';
-import MorphingView from './Result/MorphingView';
+import HandwriteCanvas from "./HandwriteCanvas/HandwriteCanvas";
+import ControllerButtons from "./ControllerButtons/ControllerButtons";
+import PredictionView from "./Result/PredictionView";
+import GifView from "./Result/GifView";
+import MorphingView from "./Result/MorphingView";
 
 import { setBackend } from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-backend-wasm';
@@ -25,7 +25,8 @@ function App() {
 
   React.useEffect(() => {
     setBackend('wasm').then(() => {
-    const model = new IDCVAE();
+      registerCustomLayers();
+      const model = new IDCVAE();
       model.load().then(() => {
         setModel(model);
       });
