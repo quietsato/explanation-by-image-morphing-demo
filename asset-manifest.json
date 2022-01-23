@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://quietsato.github.io/handwritten-digit-morphing/static/css/main.be133210.css",
-    "main.js": "https://quietsato.github.io/handwritten-digit-morphing/static/js/main.2d3e077b.js",
+    "main.js": "https://quietsato.github.io/handwritten-digit-morphing/static/js/main.cdec2be0.js",
     "static/js/787.cb243d6f.chunk.js": "https://quietsato.github.io/handwritten-digit-morphing/static/js/787.cb243d6f.chunk.js",
     "index.html": "https://quietsato.github.io/handwritten-digit-morphing/index.html",
     "main.be133210.css.map": "https://quietsato.github.io/handwritten-digit-morphing/static/css/main.be133210.css.map",
-    "main.2d3e077b.js.map": "https://quietsato.github.io/handwritten-digit-morphing/static/js/main.2d3e077b.js.map",
+    "main.cdec2be0.js.map": "https://quietsato.github.io/handwritten-digit-morphing/static/js/main.cdec2be0.js.map",
     "787.cb243d6f.chunk.js.map": "https://quietsato.github.io/handwritten-digit-morphing/static/js/787.cb243d6f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.be133210.css",
-    "static/js/main.2d3e077b.js"
+    "static/js/main.cdec2be0.js"
   ]
 }
