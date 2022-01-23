@@ -7,16 +7,15 @@ import {
   grayscaleImageDataTo2DArray,
   normalize2DArrayImage,
 } from "./ImageConverter/ImageConverter";
-import IDCVAE from "./ML/model";
+import IDCVAE, { registerCustomLayers } from "./ML/model";
 
-import HandwriteCanvas from './HandwriteCanvas/HandwriteCanvas';
-import ControllerButtons from './ControllerButtons/ControllerButtons';
-import PredictionView from './Result/PredictionView';
-import GifView from './Result/GifView';
-import MorphingView from './Result/MorphingView';
+import HandwriteCanvas from "./HandwriteCanvas/HandwriteCanvas";
+import ControllerButtons from "./ControllerButtons/ControllerButtons";
+import PredictionView from "./Result/PredictionView";
+import GifView from "./Result/GifView";
+import MorphingView from "./Result/MorphingView";
 
-import { setBackend } from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-backend-wasm';
+import * as tf from "@tensorflow/tfjs";
 
 function App() {
   const [images, setImages] = React.useState<ImageData[] | null>(null);
@@ -24,11 +23,19 @@ function App() {
   const [model, setModel] = React.useState<IDCVAE | null>(null);
 
   React.useEffect(() => {
-    setBackend('wasm').then(() => {
-    const model = new IDCVAE();
-      model.load().then(() => {
-        setModel(model);
-      });
+    tf.ready().then(() => {
+      tf.setBackend("webgl").then(async (init: boolean) => {
+        console.log(init);
+        if (!init) {
+          await tf.setBackend("cpu");
+        }
+        console.log(`Current TensorFlow backend is ${tf.getBackend()}`);
+        registerCustomLayers();
+        const model = new IDCVAE();
+        model.load().then(() => {
+          setModel(model);
+        });
+      })
     });
   }, []);
 
@@ -54,11 +61,12 @@ function App() {
   return (
     <div className="App">
       <main className="App__Container">
-        <h1>
-          Draw a digit on the following box
-        </h1>
-        <HandwriteCanvas className="App__Canvas" onImageDataRequested={onImageDataProvided}>
-          <ControllerButtons className='App__Button' />
+        <h1>Draw a digit on the following box</h1>
+        <HandwriteCanvas
+          className="App__Canvas"
+          onImageDataRequested={onImageDataProvided}
+        >
+          <ControllerButtons className="App__Button" />
         </HandwriteCanvas>
         <PredictionView predictedLabel={label} />
         <GifView morphingImages={images} />
