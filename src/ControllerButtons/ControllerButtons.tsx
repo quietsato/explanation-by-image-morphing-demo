@@ -30,7 +30,6 @@ const ControllerButtons: React.FC<Props> = (props) => {
                 ].join(" ")}
                 onClick={onImageDataRequested}
                 type="submit"
-                autoFocus={true}
             >
                 Predict
             </button>
